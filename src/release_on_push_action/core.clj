@@ -112,6 +112,7 @@
                            (println body))
                          (printf "### Commits\n\n")
                          (println summary-since-last-release))
+     :summary          (println summary-since-last-release))
      :draft            false
      :prerelease       false}))
 
@@ -131,6 +132,10 @@
   [release-data]
   (println "TEST:")
   (println (clojure.string/trim-newline (:body release-data)))
+  (println "END TEST.")
+  (println "SUMMARY:")
+  (println (:summary release-data))
+  (println "END SUMMARY.")
   (printf "::set-output name=body::%s\n" (clojure.string/trim-newline (:body release-data)))
   (printf "::set-output name=tag_name::%s\n" (:tag_name release-data))
   (printf "::set-output name=version::%s\n" (:name release-data)))
