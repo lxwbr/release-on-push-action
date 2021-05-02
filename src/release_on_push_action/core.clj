@@ -112,6 +112,7 @@
                            (println body))
                          (printf "### Commits\n\n")
                          (println summary-since-last-release))
+     :summary          (printf summary-since-last-release)
      :draft            false
      :prerelease       false}))
 
@@ -130,6 +131,7 @@
   "
   [release-data]
   (printf "::set-output name=body::%s\n" (:body release-data))
+  (printf "::set-output name=summary::%s\n" (:summary release-data))
   (printf "::set-output name=tag_name::%s\n" (:tag_name release-data))
   (printf "::set-output name=version::%s\n" (:name release-data)))
 
