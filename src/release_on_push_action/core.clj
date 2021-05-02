@@ -129,7 +129,7 @@
   See https://help.github.com/en/actions/reference/workflow-commands-for-github-actions#setting-an-output-parameter
   "
   [release-data]
-  (clojure.string/trim-newline "::set-output name=body::%s\n" (:body release-data))
+  (printf "::set-output name=body::%s\n" (clojure.string/trim-newline (:body release-data)))
   (printf "::set-output name=tag_name::%s\n" (:tag_name release-data))
   (printf "::set-output name=version::%s\n" (:name release-data)))
 
