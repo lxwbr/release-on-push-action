@@ -112,7 +112,6 @@
                            (println body))
                          (printf "### Commits\n\n")
                          (println summary-since-last-release))
-     :summary          (printf summary-since-last-release)
      :draft            false
      :prerelease       false}))
 
@@ -130,8 +129,7 @@
   See https://help.github.com/en/actions/reference/workflow-commands-for-github-actions#setting-an-output-parameter
   "
   [release-data]
-  (printf "::set-output name=body::%s\n" (:body release-data))
-  (printf "::set-output name=summary::%s\n" (:summary release-data))
+  (clojure.string/trim-newline "::set-output name=body::%s\n" (:body release-data))
   (printf "::set-output name=tag_name::%s\n" (:tag_name release-data))
   (printf "::set-output name=version::%s\n" (:name release-data)))
 
