@@ -112,7 +112,7 @@
                            (println body))
                          (printf "### Commits\n\n")
                          (println summary-since-last-release))
-     :summary          (println summary-since-last-release))
+     :summary          (println summary-since-last-release)
      :draft            false
      :prerelease       false}))
 
