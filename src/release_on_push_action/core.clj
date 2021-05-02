@@ -118,7 +118,6 @@
 (defn create-new-release! [context new-release-data]
   ;; Use a file because the release data may be too large for an inline curl arg
   (let [file (java.io.File/createTempFile "release" ".json")]
-    (.deleteOnExit file)
     (json/encode-stream new-release-data (clojure.java.io/writer file))
     (curl/post (format "https://api.github.com/repos/%s/releases" (:repo context))
                {:body    file
