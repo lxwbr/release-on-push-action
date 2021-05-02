@@ -132,7 +132,6 @@
   [release-data]
   (printf "::set-output name=tag_name::%s\n" (:tag_name release-data))
   (printf "::set-output name=version::%s\n" (:name release-data)))
-  (printf "::set-output name=body::%s\n" (:body release-data)))
 
 (defn -main [& args]
   (let [_            (println "Starting process...")
