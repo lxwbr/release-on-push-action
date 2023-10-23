@@ -137,8 +137,8 @@
   (println (:summary release-data))
   (println "END SUMMARY.")
   (println (echo "{body}=$(echo "${release-data[:body]}" | tr '\n' '%0A')" >> $GITHUB_OUTPUT))
-  (println (echo "{tag_name}=${release-data[:tag_name]}" >> $GITHUB_OUTPUT)
-  (println (echo "{version}=${release-data[:name]}" >> $GITHUB_OUTPUT)
+  (println (echo "{tag_name}=${release-data[:tag_name]}" >> $GITHUB_OUTPUT))
+  (println (echo "{version}=${release-data[:name]}" >> $GITHUB_OUTPUT))
 
 (defn -main [& args]
   (let [_            (println "Starting process...")
