@@ -136,9 +136,9 @@
   (println "SUMMARY:")
   (println (:summary release-data))
   (println "END SUMMARY.")
-  (printf "{body}={%s}" (clojure.string/replace (:body release-data) #"\n" "%0A")) >> $GITHUB_OUTPUT
-  (printf "{tag_name}={%s}" (:tag_name release-data)) >> $GITHUB_OUTPUT
-  (printf "{version}={%s}" (:name release-data)) >> $GITHUB_OUTPUT)
+  echo "{body}=$(echo "${release-data[:body]}" | tr '\n' '%0A')" >> $GITHUB_OUTPUT
+  echo "{tag_name}=${release-data[:tag_name]}" >> $GITHUB_OUTPUT
+  echo "{version}=${release-data[:name]}" >> $GITHUB_OUTPUT
 
 (defn -main [& args]
   (let [_            (println "Starting process...")
