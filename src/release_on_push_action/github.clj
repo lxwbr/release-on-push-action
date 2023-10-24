@@ -24,11 +24,13 @@
       (with-links)
       (update :body json/parse-string true)))
 
+(defn headers [context]
+  {"Authorization" (str "token " (:token context))})
+
 ;; -- Pagination helpers using token  ------------------------------------------
 (defn follow-link [context link]
   (parse-response
-   (curl/get link
-             {:headers {"Authorization" (str "token " (:token context))}})))
+   (curl/get link {:headers (headers context)})))
 
 (defn paginate
   "Paginate a resopnse with a context object"
@@ -41,12 +43,14 @@
 
 ;; -- Github PRs API  ----------------------------------------------------------
 (defn fetch-related-prs
-  "See https://developer.github.com/v3/pulls/#list-pull-requests"
+  "See https://docs.github.com/en/rest/commits/commits#list-pull-requests-associated-with-a-commit"
   [context]
   (parse-response
-   (curl/get "https://api.github.com/search/issues"
-             {:headers      {"Authorization" (str "token " (:token context))}
-              :query-params {"q" (format "repo:%s type:pr is:closed is:merged SHA:%s" (:repo context) (:sha context))}})))
+   (curl/get (format "%s/repos/%s/commits/%s/pulls"
+                     (:github/api-url context)
+                     (:repo context)
+                     (:sha context))
+             {:headers (headers context)})))
 
 ;; -- Github Releases API  -----------------------------------------------------
 (defn fetch-latest-release
@@ -57,8 +61,8 @@
   (try
     (parse-response
      (curl/get
-      (format "https://api.github.com/repos/%s/releases/latest" (:repo context))
-      {:headers {"Authorization" (str "token " (:token context))}}))
+      (format "%s/repos/%s/releases/latest" (:github/api-url context) (:repo context))
+      {:headers (headers context)}))
     (catch clojure.lang.ExceptionInfo ex
       (cond
         ;; No previous release created, return nil
@@ -72,8 +76,8 @@
   "See https://developer.github.com/v3/repos/commits/"
   [context]
   (parse-response
-   (curl/get (format "https://api.github.com/repos/%s/commits/%s" (:repo context) (:sha context))
-             {:headers {"Authorization" (str "token " (:token context))}})))
+   (curl/get (format "%s/repos/%s/commits/%s" (:github/api-url context) (:repo context) (:sha context))
+             {:headers (headers context)})))
 
 (defn list-commits
   "Gets all commits between two commit shas.
@@ -81,8 +85,8 @@
   See https://developer.github.com/v3/repos/commits/"
   [context]
   (parse-response
-   (curl/get (format "https://api.github.com/repos/%s/commits" (:repo context))
-             {:headers      {"Authorization" (str "token " (:token context))}
+   (curl/get (format "%s/repos/%s/commits" (:github/api-url context) (:repo context))
+             {:headers      (headers context)
               :query-params {"sha" (:sha context)}})))
 
 (defn list-commits-to-base
@@ -108,6 +112,7 @@
 (comment
   ;; used for testing
   (def context {:repo "rymndhng/release-on-push-action"
+                :github/api-url "https://api.github.com"
                 :sha "167c690247d0933acde636d72352bcd67e33724b"})
 
   ;; this should match
