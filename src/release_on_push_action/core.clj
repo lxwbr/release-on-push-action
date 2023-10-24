@@ -128,7 +128,7 @@
                                  (str/replace "<RELEASE_VERSION>" next-version)
                                  (str/replace "<RELEASE_TAG>" tag-name))
      :body                   body
-     :summary          (println summary-since-last-release)
+     :summary          (println commits-since-last-release)
      :draft                  false
      :prerelease             false
      :generate_release_notes (:input/use-github-release-notes context)}))
